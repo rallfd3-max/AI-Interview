@@ -1,0 +1,8 @@
+{
+  "name": "ai-interviewer-glasses-gateway",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node tests/mock-glasses-demo.mjs"
+  }
+}

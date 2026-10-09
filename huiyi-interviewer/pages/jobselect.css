@@ -1,0 +1,149 @@
+.orderCreate-box {
+    padding: 80rpx 30rpx 24rpx; /* 增加整体内边距 */
+    background-color: #f5f7fa;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+/* 标题区域优化 */
+.title {
+    font-size: 34rpx;
+    font-weight: 600;
+    color: #1a1a1a;
+    text-align: center;
+    position: relative;
+    padding: 40rpx 0 25rpx 0; /* 显著增加上下padding */
+    margin: 0 0 10rpx 0; /* 重置margin */
+}
+
+.title::after {
+    content: "";
+    position: absolute;
+    bottom: 10rpx; /* 下移装饰线 */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80rpx;
+    height: 6rpx;
+    background: linear-gradient(90deg, #409EFF, #64b5f6);
+    border-radius: 3rpx;
+}
+
+/* 表单容器优化 */
+.table-wrapper {
+    padding: 20rpx; /* 减小内边距 */
+    background-color: #fff;
+    border-radius: 20rpx;
+    box-shadow: 0 6rpx 18rpx rgba(0, 0, 0, 0.06);
+    margin: 0 auto; /* 居中 */
+    width: 95%; /* 稍微缩窄宽度 */
+}
+
+/* 表单项紧凑优化 */
+.form-item {
+    margin-bottom: 20rpx; /* 减小间距 */
+    display: flex;
+    flex-direction: column;
+}
+
+.label {
+    font-weight: 500;
+    color: #666;
+    font-size: 26rpx;
+    margin-bottom: 8rpx; /* 减小标签间距 */
+}
+
+/* 输入区域优化 */
+.info, .picker {
+    padding: 16rpx 20rpx; /* 紧凑内边距 */
+    background-color: #f9f9f9;
+    border-radius: 8rpx;
+    color: #333;
+    font-size: 26rpx; /* 稍小字体 */
+    border-left: 3rpx solid #409EFF; /* 变细边框 */
+    line-height: 1.4; /* 更好的行高 */
+}
+
+.picker::after {
+    right: 18rpx; /* 调整箭头位置 */
+    font-size: 24rpx;
+}
+
+/* 按钮优化 */
+button {
+    width: 92%;
+    margin: 30rpx auto 20rpx;
+    padding: 22rpx;
+    background: linear-gradient(90deg, #409EFF, #64b5f6);
+    color: white;
+    border: none;
+    border-radius: 12rpx;
+    font-size: 30rpx;
+    font-weight: 500;
+    box-shadow: 0 4rpx 12rpx rgba(64, 158, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+button:active {
+    transform: translateY(2rpx);
+    box-shadow: 0 2rpx 6rpx rgba(64, 158, 255, 0.3);
+}
+
+button:active::after {
+    animation: ripple 0.6s ease-out;
+}
+
+button::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5rpx;
+    height: 5rpx;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%, -50%);
+    transform-origin: 50% 50%;
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(0, 0);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(20, 20);
+        opacity: 0;
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10rpx); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.form-item {
+    animation: fadeIn 0.3s ease forwards;
+    animation-fill-mode: both;
+}
+
+/* 优化延迟动画 */
+.form-item:nth-child(1) { animation-delay: 0.05s; }
+.form-item:nth-child(2) { animation-delay: 0.1s; }
+.form-item:nth-child(3) { animation-delay: 0.15s; }
+.form-item:nth-child(4) { animation-delay: 0.2s; }
+.form-item:nth-child(5) { animation-delay: 0.25s; }
+.form-item:nth-child(6) { animation-delay: 0.3s; }
+.form-item:nth-child(7) { animation-delay: 0.35s; }
+.form-item:nth-child(8) { animation-delay: 0.4s; }
+.form-item:nth-child(9) { animation-delay: 0.45s; }
+
+/* 保持动画但更 subtle */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8rpx); }
+    to { opacity: 1; transform: translateY(0); }
+}

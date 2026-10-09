@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itzixi.mapper.InterviewRecordMapperCustom">
+
+    <select id="queryList" parameterType="map" resultType="com.itzixi.pojo.vo.InterviewRecordVO">
+        SELECT
+        ir.id as interviewRecordId,
+        c.id as candidateId,
+        c.real_name as realName,
+        c.identity_num as identityNum,
+        c.mobile as mobile,
+        c.sex as sex,
+        c.email as email,
+        c.job_id as jobId,
+        ir.create_time as createTime,
+        ir.result as result,
+        ir.answer_content as answerContent,
+        ir.take_time as takeTime,
+        ir.totalscore as totalscore,
+        ir.offer_status as offsta,
+        ir.analysis as analysis,
+        j.job_name as jobName,
+        j.image as qrcodeUrl,
+        ir.interviewresult as interviewresult
+        FROM
+        interview_record ir
+        LEFT JOIN
+        candidate c
+        ON
+        c.id = ir.candidate_id
+        LEFT JOIN
+        job j
+        ON
+        c.job_id = j.id
+        WHERE
+        1 = 1
+        <if test="paramMap.realName != null and paramMap.realName != ''">
+            AND c.real_name LIKE concat('%', #{paramMap.realName},'%')
+        </if>
+        <if test="paramMap.mobile != null and paramMap.mobile != ''">
+            AND c.mobile LIKE concat('%', #{paramMap.mobile},'%')
+        </if>
+        <if test="paramMap.jobId != null and paramMap.jobId != ''">
+            AND ir.job_id = #{paramMap.jobId}
+        </if>
+        <if test="paramMap.candidateId != null and paramMap.candidateId != ''">
+            AND c.id = #{paramMap.candidateId}
+        </if>
+        ORDER BY
+        ir.create_time
+        DESC
+
+    </select>
+    <select id="findById" parameterType="map" resultType="com.itzixi.pojo.vo.InterviewRecordVO">
+        SELECT
+        ir.id as interviewRecordId,
+        c.id as candidateId,
+        c.real_name as realName,
+        c.identity_num as identityNum,
+        c.mobile as mobile,
+        c.sex as sex,
+        c.email as email,
+        c.job_id as jobId,
+        ir.create_time as createTime,
+        ir.result as result,
+        ir.answer_content as answerContent,
+        ir.take_time as takeTime,
+        ir.totalscore as totalscore,
+        ir.offer_status as offsta,
+        ir.analysis as analysis,
+        j.job_name as jobName,
+        j.image as qrcodeUrl
+        FROM
+        interview_record ir
+        LEFT JOIN
+        candidate c
+        ON
+        c.id = ir.candidate_id
+        LEFT JOIN
+        job j
+        ON
+        c.job_id = j.id
+        WHERE
+        1 = 1
+        <if test="paramMap.realName != null and paramMap.realName != ''">
+            AND c.real_name LIKE concat('%', #{paramMap.realName},'%')
+        </if>
+        <if test="paramMap.mobile != null and paramMap.mobile != ''">
+            AND c.mobile LIKE concat('%', #{paramMap.mobile},'%')
+        </if>
+        <if test="paramMap.jobId != null and paramMap.jobId != ''">
+            AND ir.job_id = #{paramMap.jobId}
+        </if>
+        <if test="paramMap.candidateId != null and paramMap.candidateId != ''">
+            AND c.id = #{paramMap.candidateId}
+        </if>
+        ORDER BY
+        ir.create_time
+        DESC
+
+    </select>
+</mapper>

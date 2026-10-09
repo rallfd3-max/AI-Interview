@@ -1,0 +1,17 @@
+ai-interviewer-master：
+com/itzixi/controller/VllmClient.java 下VLLM_URL改服务器ip
+
+com/itzixi/controller/XFSpeechController.java targetUrl改服务器ip
+
+application-dev.yml 修改minio地址及数据库
+
+huiyi-interviewer：
+me.vue  review.vue修改api_base_url
+app.vue修改serverurl
+
+ai-interviewer-digital-dev：
+.env修改
+
+
+启动前开启redis，minio
+minio可能要改权限，如果图片加载不出来 可能是防火墙的问题

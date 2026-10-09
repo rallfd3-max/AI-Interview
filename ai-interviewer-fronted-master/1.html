@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录/注册</title>
+    <!-- 引入Element UI的样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <style>
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f5f7fa;
+            margin: 0;
+        }
+
+        .login-card {
+            width: 400px;
+            padding: 20px;
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 2px 12px 0 rgba(0,0,0,0.1);
+        }
+
+        .title {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 30px;
+            color: #303133;
+        }
+
+        .submit-btn {
+            width: 100%;
+        }
+
+        .switch-form {
+            text-align: center;
+            margin-top: 15px;
+            color: #409EFF;
+            cursor: pointer;
+        }
+
+        .switch-form:hover {
+            text-decoration: underline;
+        }
+
+        .el-form-item {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="login-container">
+            <div class="login-card">
+                <div class="title">{{ isLogin ? '登录' : '注册' }}</div>
+                <el-form :model="formData" :rules="rules" ref="loginForm">
+                    <el-form-item prop="username">
+                        <el-input v-model="formData.username" prefix-icon="el-icon-user" placeholder="用户名"></el-input>
+                    </el-form-item>
+                    <el-form-item prop="password">
+                        <el-input v-model="formData.password" prefix-icon="el-icon-lock" type="password" placeholder="密码"></el-input>
+                    </el-form-item>
+                    <el-form-item v-if="!isLogin" prop="confirmPassword">
+                        <el-input v-model="formData.confirmPassword" prefix-icon="el-icon-lock" type="password" placeholder="确认密码"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="handleSubmit" class="submit-btn">{{ isLogin ? '登录' : '注册' }}</el-button>
+                    </el-form-item>
+                    <div class="switch-form" @click="switchForm">
+                        {{ isLogin ? '没有账号？去注册' : '已有账号？去登录' }}
+                    </div>
+                </el-form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入必要的JS文件 -->
+    <script src="https://unpkg.com/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        // 登录函数
+        async function login(username, password) {
+            try {
+                const response = await axios.post(`http://${window.location.hostname}:8080/user/login`, {
+                    username: username,
+                    password: password
+                }, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.data && response.data.status === 200) {
+                    // 存储用户信息，不包含密码
+                    const userData = response.data.data;
+                    localStorage.setItem('user', JSON.stringify(userData));
+                    localStorage.setItem('token', 'Bearer ' + userData.id); // 使用用户ID作为简单的token
+                    return response.data;
+                } else {
+                    throw new Error(response.data.msg || '登录失败：服务器响应格式错误');
+                }
+            } catch (error) {
+                console.error('登录错误:', error);
+                if (error.response && error.response.status === 404) {
+                    throw new Error('登录接口未找到，请确保后端服务器已启动');
+                }
+                throw new Error(error.response?.data?.msg || '登录失败，请重试');
+            }
+        }
+
+        new Vue({
+            el: '#app',
+            data() {
+                const validatePass2 = (rule, value, callback) => {
+                    if (value === '') {
+                        callback(new Error('请再次输入密码'));
+                    } else if (value !== this.formData.password) {
+                        callback(new Error('两次输入密码不一致!'));
+                    } else {
+                        callback();
+                    }
+                };
+                return {
+                    isLogin: true,
+                    loading: false,
+                    formData: {
+                        username: '',
+                        password: '',
+                        confirmPassword: ''
+                    },
+                    rules: {
+                        username: [
+                            { required: true, message: '请输入用户名', trigger: 'blur' },
+                            { min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur' }
+                        ],
+                        password: [
+                            { required: true, message: '请输入密码', trigger: 'blur' },
+                            { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' }
+                        ],
+                        confirmPassword: [
+                            { validator: validatePass2, trigger: 'blur' }
+                        ]
+                    }
+                }
+            },
+            methods: {
+                async handleSubmit() {
+                    this.$refs.loginForm.validate(async (valid) => {
+                        if (valid) {
+                            this.loading = true;
+                            try {
+                                if (this.isLogin) {
+                                    // 调用登录函数
+                                    const result = await login(this.formData.username, this.formData.password);
+                                    if (result.status === 200) {
+                                        this.$message.success('登录成功');
+                                        // 登录成功后跳转到admin页面
+                                        window.location.href = '/pages/a/admin.html';
+                                    } else {
+                                        this.$message.error(result.msg || '登录失败');
+                                    }
+                                } else {
+                                    // 调用注册函数
+                                    const success = await register(this.formData.username, this.formData.password);
+                                    if (success) {
+                                        this.$message.success('注册成功，请登录');
+                                        this.isLogin = true;
+                                        this.$refs.loginForm.resetFields();
+                                    }
+                                }
+                            } catch (error) {
+                                this.$message.error(error.message);
+                            } finally {
+                                this.loading = false;
+                            }
+                        }
+                    });
+                },
+                switchForm() {
+                    this.isLogin = !this.isLogin;
+                    this.$nextTick(() => {
+                        this.$refs.loginForm.resetFields();
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>

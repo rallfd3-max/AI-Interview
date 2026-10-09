@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.env
+*.db
+*.db-*
+data/database/*
+data/temp/*
+data/faces/*
+data/test_images/*
+data/face_models/*
+!**/.gitkeep
+calibration*.csv
+dataset/
+pairs*.csv
+test_dataset/
+test_artifacts/

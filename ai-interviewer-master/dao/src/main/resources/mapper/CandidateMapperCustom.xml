@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itzixi.mapper.CandidateMapperCustom">
+
+    <select id="queryCandidateList" parameterType="map" resultType="com.itzixi.pojo.vo.CandidateVO">
+        SELECT
+            c.id as candidateId,
+            c.real_name as realName,
+            c.identity_num as identityNum,
+            c.mobile as mobile,
+            c.sex as sex,
+            c.email as email,
+            c.birthday as birthday,
+            c.created_time as createTime,
+            c.job_id as job_id,
+            c.school AS school,
+            c.major AS major,
+            c.certificate AS certificate,
+            c.awards AS awards,
+            c.experiment AS experiment,
+            c.introduce AS introduce,
+            j.job_name as jobName
+
+
+        FROM
+            candidate c
+            LEFT JOIN job j ON c.job_id = j.id
+        <where>
+            <if test="paramMap.realName != null and paramMap.realName != ''">
+                AND c.real_name = #{paramMap.realName}
+            </if>
+            <if test="paramMap.mobile != null and paramMap.mobile != ''">
+                AND c.mobile = #{paramMap.mobile}
+            </if>
+        </where>
+            ORDER BY
+                c.created_time
+            DESC
+    </select>
+
+    <select id="findAllByRealName" resultType="com.itzixi.pojo.vo.CandidateMatchVO">
+        SELECT
+            c.id AS candidateId,
+            c.real_name AS realName,
+            CASE
+                WHEN CHAR_LENGTH(c.mobile) = 11
+                    THEN CONCAT(LEFT(c.mobile, 3), '****', RIGHT(c.mobile, 4))
+                ELSE c.mobile
+            END AS mobileMasked,
+            c.sex AS sex,
+            c.email AS email,
+            c.job_id AS jobId,
+            j.job_name AS jobName,
+            c.school AS school,
+            c.major AS major
+        FROM candidate c
+        LEFT JOIN job j ON c.job_id = j.id
+        WHERE TRIM(c.real_name) = #{realName}
+        ORDER BY c.created_time DESC
+    </select>
+
+</mapper>

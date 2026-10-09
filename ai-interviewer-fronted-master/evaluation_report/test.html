@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大语言模型竞技场：领先AI模型可视化指南</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #003f5c;
+            color: #ffffff;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+                max-height: 450px;
+            }
+        }
+        .glass-card {
+            background: rgba(47, 75, 124, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        h1, h2, h3 {
+            font-weight: 700;
+        }
+        .decision-node {
+            border: 2px solid #ff7c43;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            background-color: #2f4b7c;
+            position: relative;
+        }
+        .decision-line {
+            position: absolute;
+            background-color: #ff7c43;
+            z-index: -1;
+        }
+        .decision-line-v {
+            width: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .decision-line-h {
+            height: 2px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Color Palette: Brilliant Blues (#003f5c, #2f4b7c, #665191, #a05195, #d45087, #f95d6a, #ff7c43, #ffa600) -->
+    <!-- NEITHER Mermaid JS NOR SVG were used in this output. All visuals are rendered via Chart.js on Canvas or using styled HTML elements. -->
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center my-12">
+            <h1 class="text-4xl md:text-6xl font-bold text-white mb-4">大语言模型竞技场</h1>
+            <p class="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">一份对当今领先AI模型的全面可视化指南，基于多维度基准测试与定性分析。</p>
+        </header>
+
+        <section id="contenders" class="my-16">
+            <h2 class="text-3xl md:text-4xl text-center mb-10 text-[#ffa600]">认识参赛者</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 text-center">
+                <div class="glass-card p-4 rounded-lg flex flex-col items-center">
+                    <span class="text-4xl mb-2">🤖</span>
+                    <h3 class="font-bold text-lg">GPT-4</h3>
+                    <p class="text-sm text-gray-300">全能型选手</p>
+                </div>
+                <div class="glass-card p-4 rounded-lg flex flex-col items-center">
+                    <span class="text-4xl mb-2">🧠</span>
+                    <h3 class="font-bold text-lg">Gemini</h3>
+                    <p class="text-sm text-gray-300">多模态大师</p>
+                </div>
+                <div class="glass-card p-4 rounded-lg flex flex-col items-center">
+                    <span class="text-4xl mb-2">🦙</span>
+                    <h3 class="font-bold text-lg">Llama2</h3>
+                    <p class="text-sm text-gray-300">开源先锋</p>
+                </div>
+                <div class="glass-card p-4 rounded-lg flex flex-col items-center">
+                    <span class="text-4xl mb-2">文</span>
+                    <h3 class="font-bold text-lg">文心一言</h3>
+                    <p class="text-sm text-gray-300">产业级知识库</p>
+                </div>
+                <div class="glass-card p-4 rounded-lg flex flex-col items-center">
+                    <span class="text-4xl mb-2">📦</span>
+                    <h3 class="font-bold text-lg">豆包</h3>
+                    <p class="text-sm text-gray-300">成本效益之王</p>
+                </div>
+                <div class="glass-card p-4 rounded-lg flex flex-col items-center">
+                    <span class="text-4xl mb-2">🔍</span>
+                    <h3 class="font-bold text-lg">DeepSeek</h3>
+                    <p class="text-sm text-gray-300">技术任务专家</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="core-abilities" class="my-20">
+            <h2 class="text-3xl md:text-4xl text-center mb-12 text-[#ffa600]">核心能力大比拼</h2>
+            
+            <div class="glass-card rounded-xl p-6 md:p-8 mb-12">
+                <h3 class="text-2xl font-bold mb-2 text-[#ff7c43]">📊 数学与代码能力</h3>
+                <p class="text-gray-300 mb-6">在高度结构化的数学和编程任务中，模型的专业化训练至关重要。以下是各模型在关键基准测试中的表现。</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="chart-container"><canvas id="mathChart"></canvas></div>
+                    <div class="chart-container"><canvas id="codeChart"></canvas></div>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-xl p-6 md:p-8 mb-12">
+                <h3 class="text-2xl font-bold mb-2 text-[#d45087]">🧠 分析与推理能力</h3>
+                <p class="text-gray-300 mb-6">逻辑推理和问题解决是衡量模型智能的核心。MMLU和GPQA等基准测试评估了模型在多学科知识和复杂问题上的推理能力。</p>
+                <div class="chart-container mx-auto"><canvas id="reasoningChart"></canvas></div>
+            </div>
+
+            <div class="glass-card rounded-xl p-6 md:p-8 mb-12">
+                <h3 class="text-2xl font-bold mb-2 text-[#a05195]">✍️ 日常创作与创造力</h3>
+                <p class="text-gray-300 mb-6">模型的流畅性令人印象深刻，但在真正原创性方面仍有挑战。它们是优秀的头脑风暴伙伴，但高风险创意工作仍需人工监督。</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-[#2f4b7c] p-4 rounded-lg">
+                        <h4 class="font-bold text-lg mb-2">GPT-4</h4>
+                        <p class="text-sm">✅ 流畅连贯，情感语调处理出色。<br>✅ 剧本、博客等创意写作能力先进。<br>❌ 改进版在深度和创造力上不稳定。</p>
+                    </div>
+                    <div class="bg-[#2f4b7c] p-4 rounded-lg">
+                        <h4 class="font-bold text-lg mb-2">Gemini</h4>
+                        <p class="text-sm">✅ 捕捉情感，适应多种风格。<br>✅ 可将文本生成带音频的视频。<br>❌ 对创意任务可能过于死板，有重复倾向。</p>
+                    </div>
+                    <div class="bg-[#2f4b7c] p-4 rounded-lg">
+                        <h4 class="font-bold text-lg mb-2">Llama2</h4>
+                        <p class="text-sm">✅ 可生成类似人类的响应，适用于内容生成。<br>❌ 叙事连贯性和原创性存在困难，常有重复。</p>
+                    </div>
+                    <div class="bg-[#2f4b7c] p-4 rounded-lg">
+                        <h4 class="font-bold text-lg mb-2">文心一言</h4>
+                        <p class="text-sm">✅ 具备深度语义理解与生成能力。<br>✅ 擅长文学创作和文案创作。</p>
+                    </div>
+                    <div class="bg-[#2f4b7c] p-4 rounded-lg">
+                        <h4 class="font-bold text-lg mb-2">豆包</h4>
+                        <p class="text-sm">✅ 支持文生图和文生语音。<br>✅ 改进了情感表达和方言支持。</p>
+                    </div>
+                    <div class="bg-[#2f4b7c] p-4 rounded-lg">
+                        <h4 class="font-bold text-lg mb-2">DeepSeek</h4>
+                        <p class="text-sm">✅ 写作风格更具个性，严格遵循指导。<br>✅ 技术写作场景表现出色。<br>❌ 创造力有时可能导致过度夸张。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-xl p-6 md:p-8 mb-12">
+                <h3 class="text-2xl font-bold mb-2 text-[#665191]">🇨🇳 中文能力</h3>
+                <p class="text-gray-300 mb-6">对于需要深入文化理解或遵循中国特定意识形态框架的应用，国产模型展现出显著优势。C-Eval和CMMLU等基准专门评估中文特有知识。</p>
+                <div class="chart-container mx-auto"><canvas id="chineseChart"></canvas></div>
+            </div>
+        </section>
+        
+        <section id="differentiators" class="my-20">
+            <h2 class="text-3xl md:text-4xl text-center mb-12 text-[#ffa600]">差异化因素：超越基准测试</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="glass-card rounded-xl p-6 text-center">
+                    <h3 class="text-2xl font-bold mb-4">💰 成本效益</h3>
+                    <p class="text-gray-300 mb-4">豆包和DeepSeek以极低的运营成本脱颖而出，对大规模应用极具吸引力。</p>
+                    <div class="text-4xl font-bold text-[#f95d6a]">0.0008元</div>
+                    <p class="text-sm text-gray-400">豆包 / 每千Tokens</p>
+                </div>
+                <div class="glass-card rounded-xl p-6 text-center">
+                    <h3 class="text-2xl font-bold mb-4">📖 开源 vs. 闭源</h3>
+                    <p class="text-gray-300 mb-4">开源模型促进社区驱动开发，而闭源模型通常在性能上领先。</p>
+                    <div class="flex justify-around">
+                        <div>
+                            <p class="font-bold text-lg text-[#ff7c43]">开源</p>
+                            <p>Llama2</p>
+                            <p>DeepSeek</p>
+                        </div>
+                        <div>
+                            <p class="font-bold text-lg text-[#d45087]">闭源</p>
+                            <p>GPT-4</p>
+                            <p>Gemini</p>
+                            <p>文心一言</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-card rounded-xl p-6 text-center">
+                    <h3 class="text-2xl font-bold mb-4">🎨 多模态能力</h3>
+                    <p class="text-gray-300 mb-4">处理文本、图像、音频和视频的能力正成为领先模型的标准配置。</p>
+                    <div class="space-y-2 text-left">
+                        <p><span class="font-bold">Gemini:</span> 📝🖼️🔊📹</p>
+                        <p><span class="font-bold">GPT-4:</span> 📝🖼️</p>
+                        <p><span class="font-bold">豆包:</span> 📝🖼️🔊</p>
+                        <p><span class="font-bold">DeepSeek:</span> 📝 (R1缺乏多模态)</p>
+                    </div>
+                </div>
+                <div class="glass-card rounded-xl p-6 text-center">
+                    <h3 class="text-2xl font-bold mb-4">📑 上下文窗口</h3>
+                    <p class="text-gray-300 mb-4">更大的上下文窗口允许模型处理更长的输入，进行更复杂的对话。</p>
+                     <div class="text-4xl font-bold text-[#ffa600]">1M</div>
+                    <p class="text-sm text-gray-400">Gemini 2.5 Pro / Tokens</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="verdict" class="my-20">
+            <h2 class="text-3xl md:text-4xl text-center mb-12 text-[#ffa600]">最终裁决：选择你的冠军</h2>
+            <p class="text-center max-w-2xl mx-auto text-gray-300 mb-12">“最佳”LLM的选择依赖于具体用例。这是一个在尖端性能、成本效益和专业化需求之间的权衡。使用下面的决策树找到最适合你的模型。</p>
+            
+            <div class="relative p-4">
+                <div class="decision-node max-w-xs mx-auto">你的主要目标是什么？</div>
+                
+                <div class="decision-line-v" style="top: 100%; height: 50px;"></div>
+
+                <div class="absolute w-full" style="top: calc(100% + 50px);">
+                    <div class="decision-line-h" style="left: 25%; width: 50%;"></div>
+                    <div class="flex justify-around">
+                        <div class="decision-line-v" style="top: -50px; height: 50px; left: 25%;"></div>
+                        <div class="decision-line-v" style="top: -50px; height: 50px; left: 50%;"></div>
+                        <div class="decision-line-v" style="top: -50px; height: 50px; left: 75%;"></div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-16 mt-32">
+                    <div class="relative">
+                         <div class="decision-node">技术任务与研究</div>
+                         <p class="text-center mt-4 text-gray-300 text-sm">需要顶级的数学、代码能力和可定制性。</p>
+                         <div class="mt-6 p-4 bg-[#665191] rounded-lg text-center">
+                            <h4 class="font-bold text-xl text-[#ffa600]">推荐: DeepSeek</h4>
+                            <p class="text-sm">卓越的性能和成本效益，开源特性适合研究。</p>
+                         </div>
+                    </div>
+                    <div class="relative">
+                         <div class="decision-node">通用AI与多模态</div>
+                         <p class="text-center mt-4 text-gray-300 text-sm">追求最前沿的通用能力，预算非首要限制。</p>
+                         <div class="mt-6 p-4 bg-[#d45087] rounded-lg text-center">
+                            <h4 class="font-bold text-xl text-[#ffa600]">推荐: GPT-4 / Gemini</h4>
+                            <p class="text-sm">强大的推理和多模态能力，生态系统成熟。</p>
+                         </div>
+                    </div>
+                    <div class="relative">
+                         <div class="decision-node">中文环境与企业应用</div>
+                         <p class="text-center mt-4 text-gray-300 text-sm">需要深度中文理解和高性价比的企业部署。</p>
+                         <div class="mt-6 p-4 bg-[#f95d6a] rounded-lg text-center">
+                            <h4 class="font-bold text-xl text-[#ffa600]">推荐: 文心一言 / 豆包</h4>
+                            <p class="text-sm">本土化优势明显，成本低，易于落地。</p>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center mt-20 py-8 border-t border-gray-700">
+            <p class="text-gray-400 text-sm">信息图表基于截至2025年中的公开数据和基准测试报告。LLM领域发展迅速，具体性能可能随模型更新而变化。</p>
+        </footer>
+
+    </div>
+
+    <script>
+        const brilliantBlues = ['#665191', '#a05195', '#d45087', '#f95d6a', '#ff7c43', '#ffa600'];
+        const textColor = '#FFFFFF';
+
+        Chart.defaults.color = textColor;
+        Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.2)';
+
+        function wrapLabel(label) {
+            const maxLength = 16;
+            if (label.length <= maxLength) {
+                return label;
+            }
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + word).length > maxLength) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            }
+            lines.push(currentLine.trim());
+            return lines;
+        }
+        
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+
+        const defaultPlugins = {
+            legend: {
+                labels: {
+                    color: textColor,
+                    font: {
+                        size: 12
+                    }
+                }
+            },
+            tooltip: {
+                callbacks: {
+                    title: tooltipTitleCallback
+                }
+            }
+        };
+
+        const defaultScales = {
+            y: {
+                beginAtZero: true,
+                ticks: { color: textColor },
+                grid: { color: 'rgba(255, 255, 255, 0.1)' }
+            },
+            x: {
+                ticks: { color: textColor },
+                grid: { color: 'rgba(255, 255, 255, 0.1)' }
+            }
+        };
+
+        new Chart(document.getElementById('mathChart'), {
+            type: 'bar',
+            data: {
+                labels: ['GPT-4', 'Gemini', 'Llama2', '豆包', 'DeepSeek'],
+                datasets: [{
+                    label: 'MATH Score (%)',
+                    data: [null, 53.2, 70, 32.6, 97.3],
+                    backgroundColor: '#d45087',
+                }, {
+                    label: 'GSM8K Score (%)',
+                    data: [94.4, 94.4, 97.6, 84.1, null],
+                    backgroundColor: '#f95d6a',
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { ...defaultPlugins, title: { display: true, text: '数学能力 (MATH & GSM8K)', color: textColor, font: { size: 16 } } },
+                scales: defaultScales
+            }
+        });
+
+        new Chart(document.getElementById('codeChart'), {
+            type: 'bar',
+            data: {
+                labels: ['GPT-4', 'Gemini', '豆包', 'DeepSeek'],
+                datasets: [{
+                    label: 'HumanEval Score (%)',
+                    data: [67.0, 74.4, 73.78, 82.6],
+                    backgroundColor: '#ff7c43',
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { ...defaultPlugins, title: { display: true, text: '代码能力 (HumanEval)', color: textColor, font: { size: 16 } } },
+                scales: defaultScales
+            }
+        });
+
+        new Chart(document.getElementById('reasoningChart'), {
+            type: 'bar',
+            data: {
+                labels: ['GPT-4', 'Gemini', 'Llama2', '豆包', 'DeepSeek'],
+                datasets: [{
+                    label: 'MMLU Score (%)',
+                    data: [88.7, 90.04, 68.9, null, 90.8],
+                    backgroundColor: '#a05195',
+                }, {
+                    label: 'GPQA Diamond Score (%)',
+                    data: [53.6, 84.0, null, null, 81.0],
+                    backgroundColor: '#665191',
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                plugins: { ...defaultPlugins, title: { display: true, text: '通用知识与推理 (MMLU & GPQA)', color: textColor, font: { size: 16 } } },
+                 scales: {
+                    y: { ticks: { color: textColor }, grid: { color: 'rgba(255, 255, 255, 0.1)' } },
+                    x: { beginAtZero: true, ticks: { color: textColor }, grid: { color: 'rgba(255, 255, 255, 0.1)' } }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('chineseChart'), {
+            type: 'bar',
+            data: {
+                labels: ['GPT-4', 'Llama2 (Colossal)', '文心一言', '豆包', 'DeepSeek'],
+                datasets: [{
+                    label: 'CMMLU Score (%)',
+                    data: [71, 61.8, null, null, null],
+                    backgroundColor: '#ffa600',
+                }, {
+                    label: 'CAICT 推理评级 (最高4+)',
+                    data: [null, null, 4, null, null],
+                    backgroundColor: '#f95d6a',
+                    type: 'line',
+                    yAxisID: 'y1'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { ...defaultPlugins, title: { display: true, text: '中文能力基准', color: textColor, font: { size: 16 } } },
+                scales: {
+                    y: { beginAtZero: true, ticks: { color: textColor }, grid: { color: 'rgba(255, 255, 255, 0.1)' }, title: { display: true, text: 'CMMLU Score (%)', color: textColor } },
+                    y1: { type: 'linear', position: 'right', beginAtZero: true, max: 5, ticks: { color: textColor, stepSize: 1 }, grid: { drawOnChartArea: false }, title: { display: true, text: 'CAICT Rating', color: textColor } },
+                    x: { ticks: { color: textColor }, grid: { color: 'rgba(255, 255, 255, 0.1)' } }
+                }
+            }
+        });
+    </script>
+
+</body>

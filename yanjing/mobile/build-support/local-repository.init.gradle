@@ -1,0 +1,13 @@
+def localRepo = { repos ->
+    repos.clear()
+    repos.maven {
+        url = uri('http://127.0.0.1:18082/')
+        allowInsecureProtocol = true
+    }
+}
+beforeSettings { settings -> localRepo(settings.pluginManagement.repositories) }
+settingsEvaluated { settings ->
+    localRepo(settings.pluginManagement.repositories)
+    localRepo(settings.dependencyResolutionManagement.repositories)
+}
+allprojects { project -> localRepo(project.buildscript.repositories) }

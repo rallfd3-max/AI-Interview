@@ -1,0 +1,165 @@
+
+
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>面试者评估报告</title>
+    <style>
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            margin: 40px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        h1,h2 {
+            color: #2c3e50;
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+        canvas {
+            background: #fff;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>面试者技术能力评估报告</h1>
+    
+    <div class="section">
+        <h2>各环节表现概述</h2>
+        <h3>初试</h3>
+        <ul>
+            <li>图灵测试：准确描述核心概念但缺少图灵提出者和具体测试设定</li>
+            <li>过拟合：能说明现象本质但未提及交叉验证和Dropout等专业术语</li>
+            <li>算法偏见：准确指出数据偏见来源但缺乏具体案例说明</li>
+        </ul>
+        
+        <h3>复试 - 自我介绍</h3>
+        <p>直接引用求职信内容，未主动展示个人优势</p>
+        
+        <h3>复试 - 项目经历</h3>
+        <ul>
+            <li>项目角色：FastAPI后端接口开发</li>
+            <li>技术实现：使用vLLM优化模型推理速度</li>
+            <li>技术决策：基于KV Cache缓存和实测数据选择技术方案</li>
+        </ul>
+        
+        <h3>复试 - 企业垂直问题</h3>
+        <p>未完成薪资期望等关键问题回答</p>
+    </div>
+
+    <div class="section">
+        <h2>能力分析</h2>
+        <h3>专业能力</h3>
+        <p>掌握AI基础概念，项目中能应用FastAPI和vLLM技术，但缺乏具体性能提升数据支撑</p>
+        
+        <h3>沟通表达</h3>
+        <p>回答简洁但缺乏主动展示，项目描述未突出个人贡献</p>
+        
+        <h3>逻辑思维</h3>
+        <p>技术决策过程有条理，但问题解决过程描述不够完整</p>
+        
+        <h3>应变能力</h3>
+        <p>能快速理解技术问题并给出合理解释</p>
+    </div>
+
+    <div class="section">
+        <h2>能力雷达图</h2>
+        <canvas id="radarChart" width="600" height="600"></canvas>
+    </div>
+
+    <div class="section">
+        <h2>综合能力</h2>
+        <h3>优势</h3>
+        <ul>
+            <li>基础概念掌握扎实</li>
+            <li>具备实际项目开发经验</li>
+            <li>技术选型有实测依据</li>
+        </ul>
+        
+        <h3>不足</h3>
+        <ul>
+            <li>技术细节描述不够深入</li>
+            <li>缺乏主动沟通意识</li>
+            <li>未提供量化成果数据</li>
+        </ul>
+        
+        <h3>岗位匹配度</h3>
+        <p>基础能力匹配度：75% | 项目经验匹配度：65% | 沟通能力匹配度：60%</p>
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById('radarChart');
+    const ctx = canvas.getContext('2d');
+    
+    // 雷达图数据
+    const data = {
+        labels: ['专业能力', '沟通表达', '逻辑思维', '应变能力', '项目经验'],
+        values: [3.5, 2.5, 3.0, 3.0, 2.8]
+    };
+    
+    // 绘制雷达图
+    function drawRadarChart() {
+        const centerX = 300;
+        const centerY = 300;
+        const radius = 250;
+        const numPoints = data.values.length;
+        
+        // 绘制背景网格
+        ctx.beginPath();
+        for (let i = 0; i < numPoints; i++) {
+            const angle = (i * 2 * Math.PI) / numPoints;
+            const x1 = centerX + radius * Math.cos(angle);
+            const y1 = centerY + radius * Math.sin(angle);
+            ctx.moveTo(centerX, centerY);
+            ctx.lineTo(x1, y1);
+        }
+        ctx.strokeStyle = "#ddd";
+        ctx.stroke();
+        
+        // 绘制数据点
+        ctx.beginPath();
+        for (let i = 0; i < numPoints; i++) {
+            const angle = (i * 2 * Math.PI) / numPoints;
+            const value = data.values[i];
+            const x = centerX + (radius * value / 5) * Math.cos(angle);
+            const y = centerY + (radius * value / 5) * Math.sin(angle);
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        }
+        ctx.closePath();
+        ctx.fillStyle = "rgba(54, 162, 235, 0.5)";
+        ctx.fill();
+        ctx.strokeStyle = "#369";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        
+        // 添加标签
+        data.labels.forEach((label, i) => {
+            const angle = (i * 2 * Math.PI) / numPoints;
+            const x = centerX + (radius + 20) * Math.cos(angle);
+            const y = centerY + (radius + 20) * Math.sin(angle);
+            ctx.fillStyle = "#333";
+            ctx.font = "14px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText(label, x, y);
+        });
+    }
+    
+    drawRadarChart();
+</script>
+</body>
+</html>
+```
